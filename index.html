@@ -3,133 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chu Nhật Anh | Robotics Engineer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Chu Nhật Anh | Future Robotics Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #2563eb;
-            --secondary: #e74c3c;
-            --dark: #1e293b;
+            --primary: #3b82f6; /* Xanh công nghệ sáng hơn */
+            --primary-dark: #1d4ed8;
+            --secondary: #ef4444; /* Đỏ tươi (Man Utd/Spider-man) */
+            --dark: #0f172a; /* Xanh đen đậm */
             --light: #f8fafc;
-            --glass: rgba(255, 255, 255, 0.9);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.4);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; background: #f0f2f5; color: var(--dark); line-height: 1.6; }
-
-        .container { max-width: 1000px; margin: auto; padding: 20px; }
-
-        /* Header chuyên nghiệp */
-        header {
-            background: linear-gradient(135deg, var(--dark) 0%, #0f172a 100%);
-            color: white;
-            padding: 80px 20px;
-            text-align: center;
-            border-radius: 0 0 50px 50px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(tobottom right, #eef2ff, #f0f9ff); 
+            color: var(--dark); 
+            line-height: 1.7; 
+            overflow-x: hidden;
         }
 
-        .profile-img {
-            width: 180px; height: 180px;
-            border-radius: 50%;
-            border: 5px solid rgba(255,255,255,0.2);
-            object-fit: cover;
-            transition: transform 0.4s ease;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
-        .profile-img:hover { transform: scale(1.05) rotate(5deg); }
-
-        h1 { font-size: 2.5rem; margin: 20px 0 10px; letter-spacing: 1px; }
-        .subtitle { font-weight: 300; opacity: 0.9; margin-bottom: 25px; }
-
-        .badge-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-        .badge {
-            background: rgba(255,255,255,0.1);
-            padding: 5px 15px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        /* Section Về tôi */
-        .content-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; margin-top: -40px; }
-        
-        .card {
-            background: var(--glass);
+        /* Navigation Bar mới */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            border: 1px solid white;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .nav-logo { font-weight: 800; font-size: 1.2rem; color: var(--primary-dark); letter-spacing: 1px; }
+        .nav-links a { text-decoration: none; color: var(--dark); margin-left: 30px; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* Header được nâng cấp */
+        header {
+            background: linear-gradient(120deg, var(--dark), #1e40af, var(--primary));
+            color: white;
+            padding: 160px 20px 100px; /* Tăng padding top vì có navbar */
+            text-align: center;
+            /* Tạo đường chéo ở dưới header */
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            margin-bottom: -50px;
         }
 
-        h2 { color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; }
-        h2::before { content: ""; width: 30px; height: 3px; background: var(--primary); margin-right: 10px; border-radius: 2px; }
+        .profile-container { position: relative; display: inline-block; }
+        .profile-img {
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            border: 6px solid rgba(255,255,255,0.3);
+            object-fit: cover;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .profile-img:hover { transform: scale(1.05) rotate(3deg); border-color: var(--primary); }
 
-        /* Hiển thị ảnh Spider-Man phong cách Card */
-        .fun-card { text-align: center; }
-        .fun-img {
-            width: 100%;
-            border-radius: 15px;
-            margin-top: 15px;
-            filter: grayscale(20%);
+        h1 { font-size: 3rem; margin: 25px 0 10px; font-weight: 800; letter-spacing: -1px; }
+        .subtitle { font-size: 1.1rem; opacity: 0.9; margin-bottom: 30px; font-weight: 300; }
+
+        .badge {
+            background: rgba(255,255,255,0.15); color: white;
+            padding: 8px 18px; border-radius: 50px;
+            font-size: 0.85rem; font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.3);
+            margin: 5px; display: inline-block;
             transition: 0.3s;
         }
-        .fun-card:hover .fun-img { filter: grayscale(0%); transform: translateY(-5px); }
+        .badge:hover { background: white; color: var(--primary-dark); transform: translateY(-3px); }
 
-        /* Kỹ năng */
-        .skills { margin-top: 20px; }
-        .skill-item {
-            background: #e2e8f0;
-            height: 10px;
-            border-radius: 5px;
-            margin: 10px 0 20px;
-            position: relative;
+        /* Container chính */
+        .container { max-width: 1100px; margin: auto; padding: 40px 20px; position: relative; z-index: 10; }
+
+        /* Nâng cấp Card Glassmorphism */
+        .content-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
+        
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px); /* Tăng độ mờ */
+            -webkit-backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            border: 2px solid var(--glass-border);
+            transition: all 0.4s ease;
         }
-        .skill-bar { height: 100%; border-radius: 5px; background: var(--primary); }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(59, 130, 246, 0.15); border-color: var(--primary); }
 
+        h2 { color: var(--dark); margin-bottom: 25px; display: flex; align-items: center; font-size: 1.5rem; font-weight: 700; }
+        h2 i { margin-right: 15px; color: var(--primary); } /* Icon cho tiêu đề */
+
+        /* Highlight text */
+        .highlight { color: var(--primary-dark); font-weight: 700; }
+        .highlight-red { color: var(--secondary); font-weight: 700; }
+
+        .fun-img {
+            width: 100%; border-radius: 20px; margin-top: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: 0.4s;
+            filter: brightness(0.9);
+        }
+        .card:hover .fun-img { transform: scale(1.03); filter: brightness(1); }
+
+        /* Skills Styles */
+        .skill-item { margin-bottom: 25px; }
+        .skill-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem;}
+        .skill-bar-bg { background: #e2e8f0; height: 12px; border-radius: 20px; overflow: hidden; }
+        .skill-bar-fill { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--primary), var(--primary-dark)); transition: width 1.5s ease-in-out; width: 0; }
+
+        footer { text-align: center; padding: 50px 20px; margin-top: 60px; color: #64748b; font-weight: 500; border-top: 1px solid #e2e8f0; background: white; }
+
+        /* Responsive cho mobile */
         @media (max-width: 768px) {
-            .content-grid { grid-template-columns: 1fr; margin-top: 20px; }
+            nav { padding: 15px 20px; }
+            .nav-links { display: none; } /* Ẩn link trên mobile cho gọn */
+            h1 { font-size: 2.2rem; }
+            header { padding-top: 120px; clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%); }
+            .card { padding: 30px; }
         }
     </style>
 </head>
 <body>
 
+    <nav>
+        <div class="nav-logo">CNA.Robot</div>
+        <div class="nav-links">
+            <a href="#about">Về tôi</a>
+            <a href="#skills">Kỹ năng</a>
+            <a href="#fun">Sở thích</a>
+        </div>
+    </nav>
+
     <header>
-        <img src="DSC_8556.jpg" alt="Chu Nhật Anh" class="profile-img">
-        <h1>Chu Nhật Anh</h1>
-        <p class="subtitle">Robotics Engineering Student @ UET</p>
-        <div class="badge-container">
-            <span class="badge">🤖 Robotics Engineering</span>
-            <span class="badge">🐍 Python Developer</span>
-            <span class="badge">⚽ Manchester United Fan</span>
+        <div data-aos="zoom-in" data-aos-duration="1000">
+            <div class="profile-container">
+                <img src="DSC_8556.jpg" alt="Chu Nhật Anh" class="profile-img">
+            </div>
+            <h1>Chu Nhật Anh</h1>
+            <p class="subtitle">Sinh viên Kỹ thuật Robot - Đại học Công nghệ (UET)</p>
+            <div class="badge-container">
+                <span class="badge">⚙️ Robotics Future</span>
+                <span class="badge">🚀 Python Coder</span>
+                <span class="badge">🔴 Man Utd Fan</span>
+            </div>
         </div>
     </header>
 
     <div class="container">
         <div class="content-grid">
-            <div class="card">
-                <h2>Giới thiệu</h2>
-                <p>Chào bạn! Tôi là Nhật Anh, hiện đang là sinh viên năm nhất ngành Kỹ thuật Robot tại Đại học Công nghệ (UET). Với niềm đam mê mãnh liệt dành cho công nghệ và toán học, tôi đã đạt được điểm số <b>9.75 môn Vật lý 1</b> và đang không ngừng khám phá thế giới lập trình.</p>
+            <div class="card" id="about" data-aos="fade-up" data-aos-delay="200">
+                <h2><span>👋</span> Giới thiệu & Học vấn</h2>
+                <p style="margin-bottom: 25px;">
+                    Chào bạn! Tôi là Nhật Anh, một sinh viên năm nhất đầy nhiệt huyết tại <b>UET</b>. Tôi đam mê việc biến những dòng code và mô hình toán học thành những cỗ máy chuyển động thực tế.
+                    <br><br>
+                    Thành tích gần đây: <span class="highlight">9.75 Vật lý 1</span> - nền tảng vững chắc cho kỹ thuật Robot.
+                </p>
                 
-                <div class="skills">
-                    <p>Python 🐍</p>
-                    <div class="skill-item"><div class="skill-bar" style="width: 85%;"></div></div>
-                    <p>Vật lý & Toán học 📐</p>
-                    <div class="skill-item"><div class="skill-bar" style="width: 95%;"></div></div>
-                    <p>Cấu trúc dữ liệu (Big-O) 💻</p>
-                    <div class="skill-item"><div class="skill-bar" style="width: 75%;"></div></div>
+                <h2 id="skills" style="margin-top: 40px;"><span>🛠️</span> Kỹ năng chính</h2>
+                <div class="skills-container">
+                    <div class="skill-item">
+                        <div class="skill-info"><span>Python & Lập trình</span><span>85%</span></div>
+                        <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 85%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info"><span>Tư duy Toán & Vật lý</span><span>95%</span></div>
+                        <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 95%;"></div></div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-info"><span>Giải thuật & Cấu trúc dữ liệu</span><span>75%</span></div>
+                        <div class="skill-bar-bg"><div class="skill-bar-fill" style="width: 75%;"></div></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="card fun-card">
-                <h2>Khía cạnh khác</h2>
-                <p>Tôi và các em tôi đều yêu thích Spider-Man!</p>
-                <img src="87bd56c4-6de9-42c8-905d-6e65de24368c.jpg" alt="Spider-Man Pose" class="fun-img">
-                <p style="margin-top: 10px; font-size: 0.9em; color: #64748b;">"Năng lực càng lớn, trách nhiệm càng cao!"</p>
+            <div style="display: flex; flex-direction: column; gap: 40px;">
+                <div class="card" id="fun" data-aos="fade-up" data-aos-delay="400" style="text-align: center;">
+                    <h2><span>🎭</span> Sau giờ code...</h2>
+                    <p>Rời xa Đại số tuyến tính, tôi trở về làm một <span class="highlight-red">Spider-Man</span> lầy lội cùng hội bạn thân!</p>
+                    <img src="87bd56c4-6de9-42c8-905d-6e65de24368c.jpg" alt="Spider-Man Pose" class="fun-img">
+                    <p style="margin-top: 15px; font-size: 0.9rem; font-style: italic;">"Work hard, Play harder!"</p>
+                </div>
+
+                <div class="card" data-aos="fade-up" data-aos-delay="600" style="background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(230,240,255,0.9)); border-color: var(--primary);">
+                    <h2><span>🚀</span> Dự án Sắp tới</h2>
+                    <p>Tôi đang ấp ủ những dự án Robot đầu tay trong năm học này. Hãy chờ đón nhé!</p>
+                    <ul style="margin-top: 15px; padding-left: 20px; font-size: 0.95rem;">
+                        <li>🤖 Robot dò đường tự động (Arduino)</li>
+                        <li>🐍 Ứng dụng Python xử lý ảnh</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
+
+    <footer data-aos="fade-in">
+        <p>© 2026 | Thiết kế & Phát triển bởi <b>Chu Nhật Anh (CNA)</b></p>
+        <p style="font-size: 0.8rem; margin-top: 10px;">Sinh viên Kỹ thuật Robot UET</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Kích hoạt thư viện animation
+        AOS.init({
+            duration: 1000, /* Thời gian hiệu ứng là 1 giây */
+            once: true, /* Chỉ chạy hiệu ứng một lần khi cuộn xuống */
+            offset: 100 /* Bắt đầu hiệu ứng trước khi đến phần tử 100px */
+        });
+
+        // Hiệu ứng chạy thanh kỹ năng khi tải trang
+        window.onload = function() {
+            const bars = document.querySelectorAll('.skill-bar-fill');
+            bars.forEach(bar => {
+                let width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 500);
+            });
+        }
+    </script>
 
 </body>
 </html>
