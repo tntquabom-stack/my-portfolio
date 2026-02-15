@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chu Nhật Anh | Robotics Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #e74c3c;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #f0f2f5; color: var(--dark); line-height: 1.6; }
+
+        .container { max-width: 1000px; margin: auto; padding: 20px; }
+
+        /* Header chuyên nghiệp */
+        header {
+            background: linear-gradient(135deg, var(--dark) 0%, #0f172a 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .profile-img {
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            border: 5px solid rgba(255,255,255,0.2);
+            object-fit: cover;
+            transition: transform 0.4s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        .profile-img:hover { transform: scale(1.05) rotate(5deg); }
+
+        h1 { font-size: 2.5rem; margin: 20px 0 10px; letter-spacing: 1px; }
+        .subtitle { font-weight: 300; opacity: 0.9; margin-bottom: 25px; }
+
+        .badge-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .badge {
+            background: rgba(255,255,255,0.1);
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Section Về tôi */
+        .content-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; margin-top: -40px; }
+        
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid white;
+        }
+
+        h2 { color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; }
+        h2::before { content: ""; width: 30px; height: 3px; background: var(--primary); margin-right: 10px; border-radius: 2px; }
+
+        /* Hiển thị ảnh Spider-Man phong cách Card */
+        .fun-card { text-align: center; }
+        .fun-img {
+            width: 100%;
+            border-radius: 15px;
+            margin-top: 15px;
+            filter: grayscale(20%);
+            transition: 0.3s;
+        }
+        .fun-card:hover .fun-img { filter: grayscale(0%); transform: translateY(-5px); }
+
+        /* Kỹ năng */
+        .skills { margin-top: 20px; }
+        .skill-item {
+            background: #e2e8f0;
+            height: 10px;
+            border-radius: 5px;
+            margin: 10px 0 20px;
+            position: relative;
+        }
+        .skill-bar { height: 100%; border-radius: 5px; background: var(--primary); }
+
+        @media (max-width: 768px) {
+            .content-grid { grid-template-columns: 1fr; margin-top: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="DSC_8556.jpg" alt="Chu Nhật Anh" class="profile-img">
+        <h1>Chu Nhật Anh</h1>
+        <p class="subtitle">Robotics Engineering Student @ UET</p>
+        <div class="badge-container">
+            <span class="badge">🤖 Robotics Engineering</span>
+            <span class="badge">🐍 Python Developer</span>
+            <span class="badge">⚽ Manchester United Fan</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="content-grid">
+            <div class="card">
+                <h2>Giới thiệu</h2>
+                <p>Chào bạn! Tôi là Nhật Anh, hiện đang là sinh viên năm nhất ngành Kỹ thuật Robot tại Đại học Công nghệ (UET). Với niềm đam mê mãnh liệt dành cho công nghệ và toán học, tôi đã đạt được điểm số <b>9.75 môn Vật lý 1</b> và đang không ngừng khám phá thế giới lập trình.</p>
+                
+                <div class="skills">
+                    <p>Python 🐍</p>
+                    <div class="skill-item"><div class="skill-bar" style="width: 85%;"></div></div>
+                    <p>Vật lý & Toán học 📐</p>
+                    <div class="skill-item"><div class="skill-bar" style="width: 95%;"></div></div>
+                    <p>Cấu trúc dữ liệu (Big-O) 💻</p>
+                    <div class="skill-item"><div class="skill-bar" style="width: 75%;"></div></div>
+                </div>
+            </div>
+
+            <div class="card fun-card">
+                <h2>Khía cạnh khác</h2>
+                <p>Tôi và các em tôi đều yêu thích Spider-Man!</p>
+                <img src="87bd56c4-6de9-42c8-905d-6e65de24368c.jpg" alt="Spider-Man Pose" class="fun-img">
+                <p style="margin-top: 10px; font-size: 0.9em; color: #64748b;">"Năng lực càng lớn, trách nhiệm càng cao!"</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
