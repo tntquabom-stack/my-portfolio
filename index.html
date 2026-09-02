@@ -1,259 +1,1814 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CNA | Robotics & AI Command Center</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Mono&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Chu Nhật Anh (CNA) | Future Robotics Engineer & AI Developer</title>
+    <meta name="description"
+        content="Portfolio cá nhân của Chu Nhật Anh (CNA) - Sinh viên Kỹ thuật Robot tại UET ĐHQGHN, đam mê AI, Robotics, Computer Vision và Embedded Systems.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         :root {
-            --bg: #030712; --panel: rgba(17, 24, 39, 0.7);
-            --accent: #00f7ff; --mu-red: #ff0000;
-            --text: #f3f4f6; --text-dim: #9ca3af;
-            --border: rgba(0, 247, 255, 0.2);
-            --font-h: 'Orbitron', sans-serif; --font-m: 'Space Mono', monospace;
+            --bg: #030712;
+            --bg-surface: rgba(10, 17, 34, 0.75);
+            --bg-surface-elevated: rgba(15, 23, 42, 0.85);
+            --accent: #00f7ff;
+            --accent-glow: rgba(0, 247, 255, 0.35);
+            --accent-secondary: #7928ca;
+            --mu-red: #ff1a35;
+            --mu-glow: rgba(255, 26, 53, 0.4);
+            --gold: #ffb703;
+            --gold-glow: rgba(255, 183, 3, 0.35);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --border-cyan: rgba(0, 247, 255, 0.22);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --font-display: 'Orbitron', sans-serif;
+            --font-mono: 'Space Mono', monospace;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-        body { 
-            background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif;
-            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
-            background-size: 40px 40px; overflow-x: hidden;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
         }
-        
 
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: #030712;
+        }
+
+        /* Interactive Particle Background */
+        #cyber-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.65;
+        }
+
+        /* Ambient Glow Blobs */
+        .ambient-glow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.22;
+        }
+
+        .glow-1 {
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, #00f7ff, transparent 70%);
+            top: -150px;
+            right: -100px;
+        }
+
+        .glow-2 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, #7928ca, transparent 70%);
+            bottom: 20%;
+            left: -200px;
+        }
+
+        .glow-3 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, var(--mu-red), transparent 70%);
+            bottom: -100px;
+            right: 10%;
+            opacity: 0.15;
+        }
+
+        /* Navigation */
         nav {
-            position: fixed; top: 0; width: 100%; padding: 20px 5%; z-index: 100;
-            background: rgba(3, 7, 18, 0.8); backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border); display: flex; justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 18px 6%;
+            z-index: 1000;
+            background: rgba(3, 7, 18, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-cyan);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
         }
-        .nav-logo { font-family: var(--font-h); color: var(--accent); font-weight: 700; letter-spacing: 2px; }
-        .nav-links a { color: var(--text); text-decoration: none; margin-left: 20px; font-family: var(--font-m); font-size: 0.8rem; opacity: 0.7; transition: 0.3s; }
-        .nav-links a:hover { color: var(--accent); opacity: 1; }
 
-        header { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        
-        .profile-circle-wrap {
-            position: relative; width: 180px; height: 180px;
-            display: flex; align-items: center; justify-content: center; margin-bottom: 25px;
+        .nav-logo-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
         }
-        .profile-circle-wrap::before {
-            content: ""; position: absolute; inset: 0;
-            border-radius: 50%; padding: 4px;
-            background: linear-gradient(45deg, transparent, var(--accent), var(--mu-red), var(--accent));
+
+        .nav-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+            animation: pulse-dot 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                opacity: 0.4;
+                transform: scale(0.9);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            color: var(--text-main);
+            font-weight: 900;
+            font-size: 1.15rem;
+            letter-spacing: 2.5px;
+            text-shadow: 0 0 12px rgba(0, 247, 255, 0.4);
+        }
+
+        .nav-logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 6px 4px;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero / Header Section */
+        header {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 130px 20px 70px;
+            z-index: 10;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 247, 255, 0.08);
+            border: 1px solid rgba(0, 247, 255, 0.3);
+            padding: 6px 16px;
+            border-radius: 99px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--accent);
+            letter-spacing: 1.5px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.1);
+        }
+
+        .hero-badge-live {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+        }
+
+        /* Profile Circular Reactor Core */
+        .profile-circle-wrap {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 28px;
+        }
+
+        .reactor-ring-outer {
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 2px dashed rgba(0, 247, 255, 0.4);
+            animation: rotate-reverse 20s linear infinite;
+        }
+
+        .reactor-ring-glow {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(135deg, var(--accent), var(--mu-red), #9333ea, var(--accent));
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude; -webkit-mask-composite: xor;
-            animation: rotate-ring 4s linear infinite;
+            mask-composite: exclude;
+            -webkit-mask-composite: xor;
+            animation: rotate-ring 6s linear infinite;
+            filter: drop-shadow(0 0 12px var(--accent-glow));
         }
-        .profile-circle-wrap img { 
-            width: 160px; height: 160px; border-radius: 50%; 
-            object-fit: cover; border: 2px solid var(--border);
-            box-shadow: 0 0 20px rgba(0, 247, 255, 0.2);
-        }
-        @keyframes rotate-ring { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .glitch { font-family: var(--font-h); font-size: 3.5rem; position: relative; color: var(--text); text-transform: uppercase; margin-bottom: 10px; }
-        .glitch::before, .glitch::after { content: attr(data-text); position: absolute; inset: 0; opacity: 0; z-index: -1; }
-        .glitch::before { color: var(--accent); text-shadow: -3px 0 var(--mu-red); animation: g-flash 3s infinite; }
-        .glitch::after { color: var(--text); text-shadow: 3px 0 var(--accent); animation: g-flash 3s infinite 0.1s; }
+        .profile-circle-wrap img {
+            width: 175px;
+            height: 175px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 35px rgba(0, 247, 255, 0.35);
+            z-index: 2;
+            transition: transform 0.5s ease;
+        }
+
+        .profile-circle-wrap:hover img {
+            transform: scale(1.04);
+        }
+
+        @keyframes rotate-ring {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotate-reverse {
+            from {
+                transform: rotate(360deg);
+            }
+
+            to {
+                transform: rotate(0deg);
+            }
+        }
+
+        /* Cyber Glitch Title */
+        .glitch {
+            font-family: var(--font-display);
+            font-size: clamp(2.4rem, 6vw, 4.2rem);
+            font-weight: 900;
+            position: relative;
+            color: #ffffff;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            text-shadow: 0 0 20px rgba(0, 247, 255, 0.2);
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            z-index: -1;
+        }
+
+        .glitch::before {
+            color: var(--accent);
+            text-shadow: -3px 0 var(--mu-red);
+            animation: g-flash 3.5s infinite;
+        }
+
+        .glitch::after {
+            color: var(--text-main);
+            text-shadow: 3px 0 var(--accent);
+            animation: g-flash 3.5s infinite 0.15s;
+        }
 
         @keyframes g-flash {
-            0%, 7%, 100% { opacity: 0; transform: none; clip-path: none; }
-            1% { opacity: 1; transform: translate(-4px, 2px); clip-path: inset(10% 0 80% 0); }
-            3% { opacity: 1; transform: translate(4px, -2px); clip-path: inset(40% 0 50% 0); }
-            5% { opacity: 1; transform: translate(-2px, 4px); clip-path: inset(70% 0 10% 0); }
+
+            0%,
+            6%,
+            100% {
+                opacity: 0;
+                transform: none;
+                clip-path: none;
+            }
+
+            1% {
+                opacity: 0.9;
+                transform: translate(-3px, 2px);
+                clip-path: inset(15% 0 75% 0);
+            }
+
+            2.5% {
+                opacity: 0.9;
+                transform: translate(3px, -2px);
+                clip-path: inset(45% 0 45% 0);
+            }
+
+            4% {
+                opacity: 0.9;
+                transform: translate(-2px, 3px);
+                clip-path: inset(75% 0 10% 0);
+            }
         }
 
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-        section { padding: 80px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .sec-n { font-family: var(--font-m); color: var(--accent); display: block; margin-bottom: 8px; }
-        h2 { font-family: var(--font-h); font-size: 1.8rem; margin-bottom: 35px; text-transform: uppercase; }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .card { 
-            background: var(--panel); border: 1px solid var(--border); padding: 25px; transition: 0.4s; position: relative; 
+        .hero-subtitle {
+            font-family: var(--font-mono);
+            color: var(--accent);
+            font-size: clamp(0.95rem, 2.5vw, 1.25rem);
+            letter-spacing: 3px;
+            margin-bottom: 24px;
+            text-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
         }
-        .card::before { content: ""; position: absolute; top: -1px; left: -1px; width: 15px; height: 15px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
-        .card:hover { transform: translateY(-8px); background: rgba(0, 247, 255, 0.05); border-color: var(--accent); }
 
-        .bio-flex { display: flex; gap: 60px; align-items: flex-start; }
-        .bio-left { flex: 1.2; }
-        .bio-right { flex: 1; margin-top: 40px; }
-        .bio-text { line-height: 1.8; color: var(--text-dim); font-size: 0.95rem; margin-bottom: 40px; }
-        .bio-text b { color: var(--accent); font-weight: 600; }
-        
-        .achieve-box {
-            border: 1px solid var(--accent); background: rgba(0, 247, 255, 0.03);
-            padding: 30px; position: relative;
+        .hero-summary {
+            max-width: 680px;
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 35px;
+            font-weight: 400;
         }
-        .achieve-box::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); }
-        .achieve-label { font-family: var(--font-m); font-size: 0.7rem; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; display: block; }
-        .achieve-val { font-family: var(--font-h); font-size: 2.5rem; font-weight: 700; color: #fff; line-height: 1; }
-        .achieve-desc { font-size: 0.8rem; color: var(--text-dim); margin-top: 10px; }
 
-        .info-row { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 18px 0; }
-        .info-label { font-family: var(--font-m); font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; }
-        .info-val { font-family: var(--font-m); font-size: 0.85rem; color: #fff; }
+        .hero-cta-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
 
-        .skill-info { display: flex; justify-content: space-between; font-family: var(--font-m); font-size: 0.75rem; margin-bottom: 6px; }
-        .bar { height: 4px; background: rgba(255,255,255,0.1); margin-bottom: 15px; }
-        .fill { height: 100%; background: var(--accent); box-shadow: 0 0 10px var(--accent); width: 0; transition: 2s; }
-        .fill-red { background: var(--mu-red); box-shadow: 0 0 10px var(--mu-red); }
+        /* Buttons & Actions */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 28px;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
 
-        .btn { padding: 10px 20px; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; font-family: var(--font-m); font-size: 0.75rem; transition: 0.3s; display: inline-block; margin-right: 10px; }
-        .btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 15px var(--accent); }
+        .btn-primary {
+            background: linear-gradient(135deg, rgba(0, 247, 255, 0.2), rgba(0, 247, 255, 0.05));
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.2);
+        }
 
-        .email-display { font-family: var(--font-m); font-size: 0.9rem; margin-bottom: 25px; color: var(--text); }
-        .email-display span { color: var(--accent); font-weight: bold; }
-        .contact-buttons { margin-top: 10px; }
+        .btn-primary:hover {
+            background: var(--accent);
+            color: #030712;
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.6);
+            transform: translateY(-2px);
+        }
 
-        .mu-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 25px; }
-        .mu-card-main { border-left: 4px solid var(--mu-red); background: linear-gradient(135deg, rgba(255,0,0,0.1), transparent); }
-        .mu-stats-list { list-style: none; font-family: var(--font-m); font-size: 0.8rem; }
-        .mu-stats-list li { margin-bottom: 12px; display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,0,0,0.1); padding-bottom: 5px; }
-        .mu-tag { color: var(--mu-red); font-weight: bold; }
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+            border: 1px solid var(--border-subtle);
+        }
 
-        footer { padding: 40px; text-align: center; font-family: var(--font-m); font-size: 0.65rem; opacity: 0.6; }
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(0, 247, 255, 0.06);
+            transform: translateY(-2px);
+        }
 
-        @media (max-width: 950px) { .bio-flex, .mu-grid { flex-direction: column; display: block; } .bio-right { margin-top: 50px; } }
-        @media (max-width: 768px) { .glitch { font-size: 2.2rem; } .grid { grid-template-columns: 1fr; } }
+        /* Layout & Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 10;
+        }
+
+        section {
+            padding: 100px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        .section-header {
+            margin-bottom: 45px;
+        }
+
+        .sec-tag {
+            font-family: var(--font-mono);
+            color: var(--accent);
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            display: inline-block;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 45px;
+            height: 3px;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        /* Cyber Card Base */
+        .cyber-card {
+            background: var(--bg-surface);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--border-cyan);
+            border-radius: 12px;
+            padding: 30px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        .cyber-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            border-top: 2px solid var(--accent);
+            border-left: 2px solid var(--accent);
+            border-top-left-radius: 8px;
+            pointer-events: none;
+        }
+
+        .cyber-card::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 20px;
+            height: 20px;
+            border-bottom: 2px solid var(--accent);
+            border-right: 2px solid var(--accent);
+            border-bottom-right-radius: 8px;
+            pointer-events: none;
+        }
+
+        .cyber-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(0, 247, 255, 0.6);
+            box-shadow: 0 15px 35px -10px rgba(0, 247, 255, 0.15);
+            background: rgba(14, 25, 48, 0.85);
+        }
+
+        /* Bio Layout */
+        .bio-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 40px;
+            align-items: stretch;
+        }
+
+        .bio-lead {
+            font-size: 1.05rem;
+            color: #cbd5e1;
+            line-height: 1.85;
+            margin-bottom: 25px;
+        }
+
+        .bio-lead b {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Specs / Info Table */
+        .specs-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .spec-label span.icon {
+            color: var(--accent);
+        }
+
+        .spec-val {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        /* =========================================
+           ACADEMIC ACHIEVEMENTS / BẢNG VÀNG THÀNH TÍCH
+           ========================================= */
+        .achievements-wrapper {
+            margin-top: 50px;
+        }
+
+        .achieve-banner-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .achieve-banner-header .tag-pill {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, rgba(255, 183, 3, 0.2), rgba(0, 247, 255, 0.15));
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 5px 14px;
+            border-radius: 99px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 0 15px var(--gold-glow);
+        }
+
+        .achieve-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .achieve-card {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(8, 14, 29, 0.8));
+            border: 1px solid rgba(0, 247, 255, 0.25);
+            border-radius: 12px;
+            padding: 26px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.35s ease;
+        }
+
+        .achieve-card.gold-glow {
+            border-color: rgba(255, 183, 3, 0.35);
+        }
+
+        .achieve-card.cyan-glow {
+            border-color: rgba(0, 247, 255, 0.35);
+        }
+
+        .achieve-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 36px -8px rgba(0, 247, 255, 0.2);
+            border-color: var(--accent);
+        }
+
+        .achieve-card.gold-glow:hover {
+            box-shadow: 0 16px 36px -8px rgba(255, 183, 3, 0.25);
+            border-color: var(--gold);
+        }
+
+        .achieve-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .subject-badge {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .grade-pill {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 900;
+            padding: 6px 14px;
+            border-radius: 6px;
+            letter-spacing: 1.5px;
+        }
+
+        .grade-a-plus {
+            background: rgba(255, 183, 3, 0.15);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            box-shadow: 0 0 15px var(--gold-glow);
+        }
+
+        .grade-a {
+            background: rgba(0, 247, 255, 0.15);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .subject-title {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .score-display {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin: 14px 0 10px;
+        }
+
+        .score-number {
+            font-family: var(--font-display);
+            font-size: 2.8rem;
+            font-weight: 900;
+            line-height: 1;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
+        }
+
+        .score-number.gold {
+            color: var(--gold);
+            text-shadow: 0 0 20px var(--gold-glow);
+        }
+
+        .score-number.cyan {
+            color: var(--accent);
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .score-max {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            color: var(--text-dim);
+        }
+
+        .achieve-desc {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        .achieve-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .achieve-tag {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+        }
+
+        /* Projects Section */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 28px;
+        }
+
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .project-code {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--accent);
+            letter-spacing: 1px;
+        }
+
+        .status-badge {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            padding: 4px 10px;
+            border-radius: 99px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+        }
+
+        .status-incubating {
+            background: rgba(0, 247, 255, 0.12);
+            color: var(--accent);
+            border: 1px solid rgba(0, 247, 255, 0.35);
+        }
+
+        .status-progress {
+            background: rgba(255, 183, 3, 0.12);
+            color: var(--gold);
+            border: 1px solid rgba(255, 183, 3, 0.35);
+        }
+
+        .status-indicator-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 6px currentColor;
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        .project-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .project-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 22px;
+            line-height: 1.65;
+            flex-grow: 1;
+        }
+
+        .tech-stack-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .tech-pill {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: rgba(0, 247, 255, 0.05);
+            border: 1px solid rgba(0, 247, 255, 0.18);
+            color: var(--accent);
+        }
+
+        /* Hobbies Section */
+        .hobbies-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .hobby-photo-card {
+            padding: 16px;
+            text-align: center;
+        }
+
+        .hobby-photo-inner {
+            overflow: hidden;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .hobby-photo-inner img {
+            width: 100%;
+            height: auto;
+            max-height: 380px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.6s ease;
+            display: block;
+        }
+
+        .hobby-photo-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .photo-caption {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            margin-top: 14px;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hobby-list-card {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .hobby-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 16px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .hobby-item:hover {
+            background: rgba(0, 247, 255, 0.05);
+            border-color: var(--border-cyan);
+            transform: translateX(6px);
+        }
+
+        .hobby-icon {
+            font-size: 1.5rem;
+            min-width: 40px;
+            height: 40px;
+            background: rgba(0, 247, 255, 0.08);
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hobby-text h4 {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            color: #ffffff;
+            margin-bottom: 2px;
+        }
+
+        .hobby-text p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            font-family: var(--font-mono);
+        }
+
+        /* Manchester United Section */
+        .mu-section-title {
+            color: var(--mu-red) !important;
+            text-shadow: 0 0 20px var(--mu-glow);
+        }
+
+        .mu-section-title::after {
+            background: var(--mu-red) !important;
+            box-shadow: 0 0 10px var(--mu-red) !important;
+        }
+
+        .mu-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 28px;
+        }
+
+        .mu-card-main {
+            border-color: rgba(255, 26, 53, 0.35);
+            background: linear-gradient(135deg, rgba(255, 26, 53, 0.08), rgba(15, 23, 42, 0.9));
+        }
+
+        .mu-card-main::before {
+            border-top-color: var(--mu-red);
+            border-left-color: var(--mu-red);
+        }
+
+        .mu-card-main::after {
+            border-bottom-color: var(--mu-red);
+            border-right-color: var(--mu-red);
+        }
+
+        .mu-quote {
+            font-style: italic;
+            color: #f1f5f9;
+            line-height: 1.9;
+            font-size: 1.12rem;
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 20px;
+            border-left: 3px solid var(--mu-red);
+        }
+
+        .mu-progress-group {
+            margin-top: 20px;
+        }
+
+        .skill-info {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+            color: var(--mu-red);
+            font-weight: 700;
+        }
+
+        .bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 99px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 26, 53, 0.2);
+        }
+
+        .fill-red {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, #ff1a35, #ff5722);
+            box-shadow: 0 0 15px var(--mu-red);
+            border-radius: 99px;
+        }
+
+        .mu-stats-list {
+            list-style: none;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+        }
+
+        .mu-stats-list li {
+            padding: 14px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 26, 53, 0.12);
+        }
+
+        .mu-stats-list li:last-child {
+            border-bottom: none;
+        }
+
+        .mu-stat-title {
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .mu-tag {
+            color: var(--mu-red);
+            font-weight: 700;
+            background: rgba(255, 26, 53, 0.1);
+            border: 1px solid rgba(255, 26, 53, 0.25);
+            padding: 3px 10px;
+            border-radius: 4px;
+        }
+
+        /* Contact Section */
+        .contact-box {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .contact-intro {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        .email-card {
+            background: rgba(0, 247, 255, 0.04);
+            border: 1px solid var(--border-cyan);
+            border-radius: 8px;
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .email-val {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            color: var(--accent);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent);
+            color: #030712;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(3, 7, 18, 0.95);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            box-shadow: 0 0 25px rgba(0, 247, 255, 0.3);
+            z-index: 9999;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px 20px 40px;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(3, 7, 18, 0.8);
+            position: relative;
+            z-index: 10;
+        }
+
+        footer b {
+            color: var(--accent);
+        }
+
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            background: rgba(10, 17, 34, 0.85);
+            border: 1px solid var(--border-cyan);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 999;
+            transition: all 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.15);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover {
+            background: var(--accent);
+            color: #030712;
+            transform: translateY(-4px);
+            box-shadow: 0 0 20px var(--accent);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 960px) {
+
+            .bio-grid,
+            .mu-grid,
+            .hobbies-grid,
+            .contact-box {
+                grid-template-columns: 1fr;
+                gap: 35px;
+            }
+
+            .nav-links {
+                display: none;
+                /* Can be toggled on mobile or keep simplified */
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav {
+                padding: 16px 20px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-cta-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .hero-cta-group .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .achieve-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .email-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .toast {
+                left: 20px;
+                right: 20px;
+                bottom: 20px;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-<nav>
-    <div class="nav-logo">CNA.ROBOT</div>
-    <div class="nav-links">
-        <a href="#about">01//BIO</a> <a href="#projects">02//PRJ</a> 
-        <a href="#hobbies">03//HOB</a> <a href="#manutd">04//MUFC</a> <a href="#contact">05//CON</a>
-    </div>
-</nav>
+    <!-- Interactive Particle Canvas Background -->
+    <canvas id="cyber-canvas"></canvas>
 
-<header>
-    <div class="profile-circle-wrap" data-aos="zoom-in">
-        <img src="DSC_8556.jpg" alt="Chu Nhật Anh">
-    </div>
-    <h1 class="glitch" data-text="CHU NHẬT ANH">CHU NHẬT ANH</h1>
-    <p style="font-family: var(--font-m); color: var(--accent); font-size: 0.9rem;">[ FUTURE ROBOTICS ENGINEER ]</p>
-</header>
+    <!-- Ambient Glow Elements -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
 
-<main class="container">
-    <section id="about" data-aos="fade-up">
-        <div class="bio-flex">
-            <div class="bio-left">
-                <span class="sec-n">01 //</span> <h2>Về tôi</h2>
-                <p class="bio-text">
-                    Chào bạn! Tôi là <b>Nhật Anh</b>, sinh viên năm nhất đầy nhiệt huyết tại <b>Trường Đại học Công nghệ – ĐHQGHN</b>. Tôi đam mê việc biến những dòng code và mô hình toán học thành những cỗ máy chuyển động thực tế.
-                    <br><br>
-                    Với nền tảng toán học và vật lý vững chắc, tôi đang từng bước xây dựng hành trình trở thành kỹ sư robotics — những người tạo ra trí tuệ cho cỗ máy.
-                </p>
-                <div class="achieve-box">
-                    <span class="achieve-label">🏆 THÀNH TÍCH NỔI BẬT</span>
-                    <div class="achieve-val">9.75 / 10</div>
-                    <p class="achieve-desc">Điểm Vật Lý 1 — Nền tảng vững chắc cho kỹ thuật Robot</p>
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="#" class="nav-logo-group">
+            <span class="nav-status-dot"></span>
+            <div class="nav-logo">CNA<span>.ROBOT</span></div>
+        </a>
+        <div class="nav-links">
+            <a href="#about">01//BIO</a>
+            <a href="#achievements">02//HONORS</a>
+            <a href="#projects">03//PRJ</a>
+            <a href="#hobbies">04//HOB</a>
+            <a href="#manutd">05//MUFC</a>
+            <a href="#contact">06//COMM</a>
+        </div>
+    </nav>
+
+    <!-- Hero / Header -->
+    <header id="top">
+        <div class="hero-badge" data-aos="fade-down">
+            <span class="hero-badge-live"></span>
+            <span>UET - VNU HANOI // ROBOTICS CLASS RE2</span>
+        </div>
+
+        <div class="profile-circle-wrap" data-aos="zoom-in" data-aos-delay="100">
+            <div class="reactor-ring-outer"></div>
+            <div class="reactor-ring-glow"></div>
+            <img src="DSC_8556.jpg" alt="Chu Nhật Anh - CNA">
+        </div>
+
+        <h1 class="glitch" data-text="CHU NHẬT ANH" data-aos="fade-up" data-aos-delay="200">CHU NHẬT ANH</h1>
+
+        <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="300">
+            [ FUTURE ROBOTICS ENGINEER &amp; AI DEVELOPER ]
+        </p>
+
+        <p class="hero-summary" data-aos="fade-up" data-aos-delay="400">
+            Biến những dòng code và nguyên lý vật lý chính xác thành những cỗ máy chuyển động thực tế. Kiến tạo trí tuệ
+            nhân tạo và hệ thống tự hành tương lai.
+        </p>
+
+        <div class="hero-cta-group" data-aos="fade-up" data-aos-delay="500">
+            <a href="#achievements" class="btn btn-primary">
+                <span>⚡ XEM THÀNH TÍCH</span>
+            </a>
+            <a href="#projects" class="btn btn-outline">
+                <span>🌌 DỰ ÁN CÔNG NGHỆ</span>
+            </a>
+            <a href="#contact" class="btn btn-outline">
+                <span>📡 KẾT NỐI NGAY</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- SECTION 01: Về tôi (BIO) -->
+        <section id="about" data-aos="fade-up">
+            <div class="section-header">
+                <span class="sec-tag">01 // PROFILE</span>
+                <h2>Về tôi</h2>
+            </div>
+
+            <div class="bio-grid">
+                <div class="cyber-card">
+                    <p class="bio-lead">
+                        Chào bạn! Tôi là <b>Nhật Anh</b>, sinh viên năm nhất đầy nhiệt huyết tại <b>Trường Đại học Công
+                            nghệ – ĐHQGHN (UET - VNU)</b>. Tôi đam mê việc biến những dòng code và mô hình toán học
+                        thành những cỗ máy chuyển động thực tế.
+                    </p>
+                    <p class="bio-lead" style="color: var(--text-muted); font-size: 0.98rem; margin-bottom: 0;">
+                        Với tư duy logic vững vàng, đặc biệt là nền tảng vật lý và toán học chuyên sâu, tôi đang từng
+                        bước kiên trì trên hành trình trở thành <b>kỹ sư Robotics</b> — người trực tiếp thổi hồn trí tuệ
+                        và sự chính xác cơ học vào các hệ thống tự hành thế hệ mới.
+                    </p>
+                </div>
+
+                <div class="cyber-card specs-panel">
+                    <div class="spec-item">
+                        <span class="spec-label"><span class="icon">▸</span> Họ tên</span>
+                        <span class="spec-val">Chu Nhật Anh</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label"><span class="icon">▸</span> Biệt danh</span>
+                        <span class="spec-val" style="color: var(--accent);">CNA</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label"><span class="icon">▸</span> Trường</span>
+                        <span class="spec-val">UET – ĐHQG Hà Nội</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label"><span class="icon">▸</span> Ngành học</span>
+                        <span class="spec-val">Kỹ thuật Robot</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label"><span class="icon">▸</span> Niên khóa</span>
+                        <span class="spec-val">2025 – 2029</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label"><span class="icon">▸</span> Địa điểm</span>
+                        <span class="spec-val">Hà Nội, Việt Nam</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 02: BẢNG VÀNG THÀNH TÍCH (ACADEMIC HONORS) -->
+        <section id="achievements" data-aos="fade-up">
+            <div class="section-header">
+                <span class="sec-tag">02 // ACADEMIC EXCELLENCE</span>
+                <h2>Thành tích nổi bật</h2>
+            </div>
+
+            <div class="achieve-banner-header">
+                <div class="tag-pill">
+                    <span>🏆 BẢNG VÀNG VẬT LÝ &amp; KỸ THUẬT ROBOT</span>
                 </div>
             </div>
 
-            <div class="bio-right">
-                <div class="info-row"><span class="info-label">Họ tên</span> <span class="info-val">Chu Nhật Anh</span></div>
-                <div class="info-row"><span class="info-label">Biệt danh</span> <span class="info-val">CNA</span></div>
-                <div class="info-row"><span class="info-label">Trường</span> <span class="info-val">UET – VNU Hà Nội</span></div>
-                <div class="info-row"><span class="info-label">Ngành</span> <span class="info-val">Kỹ thuật Robot</span></div>
-                <div class="info-row"><span class="info-label">Năm học</span> <span class="info-val">2025 - 2029</span></div>
-                <div class="info-row"><span class="info-label">Địa điểm</span> <span class="info-val">Hà Nội, Việt Nam</span></div>
-            </div>
-        </div>
-    </section>
+            <div class="achieve-grid">
+                <!-- Card Vật Lý 2 (Điểm 9.5 & A+) -->
+                <div class="achieve-card gold-glow" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="achieve-card-top">
+                        <span class="subject-badge">MODULE // PHYS-102</span>
+                        <span class="grade-pill grade-a-plus">HẠNG A+</span>
+                    </div>
+                    <div class="subject-title">⚡ Vật Lý 2</div>
+                    <div class="score-display">
+                        <span class="score-number gold">9.5</span>
+                        <span class="score-max">/ 10.0</span>
+                    </div>
+                    <p class="achieve-desc">
+                        Hoàn thành xuất sắc học phần với điểm số <b>9.5</b> và đạt điểm chữ tổng kết <b>A+</b>. Nắm vững
+                        điện từ trường, quang học và lượng tử làm bệ phóng cho thiết kế mạch điều khiển và cảm biến
+                        robot.
+                    </p>
+                    <div class="achieve-tags">
+                        <span class="achieve-tag">Tổng kết: A+</span>
+                        <span class="achieve-tag">Điểm thi: 9.5</span>
+                        <span class="achieve-tag">Điện từ trường</span>
+                        <span class="achieve-tag">Cảm biến Robot</span>
+                    </div>
+                </div>
 
-    <section id="projects" data-aos="fade-up">
-        <span class="sec-n">02 //</span> <h2>Dự án</h2>
-        <div class="grid">
-            <div class="card" style="border-color: var(--accent);">
-                <h3>🌌 cnAI & SOVA</h3>
-                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 5px;">Hệ thống chatbot Sova tích hợp đa nền tảng cho cnAI.</p>
-                <div style="margin-top: 15px; font-family: var(--font-m); font-size: 0.65rem; color: var(--accent);">STATUS: INCUBATING</div>
-            </div>
-            <div class="card">
-                <h3>🤖 AUTONOMOUS ROBOT</h3>
-                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 5px;">Robot dò đường Arduino tự hành với cảm biến hồng ngoại.</p>
-                <div style="margin-top: 15px; font-family: var(--font-m); font-size: 0.65rem; color: var(--text-dim);">STATUS: IN PROGRESS</div>
-            </div>
-            <div class="card">
-                <h3>🐍 ROBOT VISION</h3>
-                <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 5px;">Ứng dụng xử lý ảnh và nhận diện vật thể bằng Python.</p>
-                <div style="margin-top: 15px; font-family: var(--font-m); font-size: 0.65rem; color: var(--text-dim);">STATUS: IN PROGRESS</div>
-            </div>
-        </div>
-    </section>
+                <!-- Card Vật Lý 1 (Điểm 9.75 & A) -->
+                <div class="achieve-card cyan-glow" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="achieve-card-top">
+                        <span class="subject-badge">MODULE // PHYS-101</span>
+                        <span class="grade-pill grade-a">HẠNG A</span>
+                    </div>
+                    <div class="subject-title">⚛️ Vật Lý 1</div>
+                    <div class="score-display">
+                        <span class="score-number cyan">9.75</span>
+                        <span class="score-max">/ 10.0</span>
+                    </div>
+                    <p class="achieve-desc">
+                        Đạt điểm thành phần xuất sắc <b>9.75</b> và tổng kết học phần đạt <b>Điểm A</b>. Nền tảng cơ học
+                        cổ điển và nhiệt động lực học đóng vai trò cốt lõi trong tính toán kết cấu, động học tay máy
+                        robot.
+                    </p>
+                    <div class="achieve-tags">
+                        <span class="achieve-tag">Tổng kết: A</span>
+                        <span class="achieve-tag">Điểm quá trình: 9.75</span>
+                        <span class="achieve-tag">Động lực học</span>
+                        <span class="achieve-tag">Cơ học kết cấu</span>
+                    </div>
+                </div>
 
-    <section id="hobbies" data-aos="fade-up">
-        <span class="sec-n">03 //</span> <h2>Sở thích</h2>
-        <div class="grid">
-            <div class="card" style="text-align: center;">
-                <img src="87bd56c4-6de9-42c8-905d-6e65de24368c.jpg" alt="Family" style="width: 100%;">
-                <p style="font-size: 0.7rem; margin-top: 10px; opacity: 0.6;">Duy & Nam - Spider Man 🕷️</p>
+                <!-- Card Nền tảng Kỹ thuật Robot UET -->
+                <div class="achieve-card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="achieve-card-top">
+                        <span class="subject-badge">FACULTY // UET - VNU</span>
+                        <span class="grade-pill grade-a">TOP TIER</span>
+                    </div>
+                    <div class="subject-title">🤖 Kỹ Thuật Robot</div>
+                    <div class="score-display">
+                        <span class="score-number" style="font-size: 2.2rem; color: #38bdf8;">UET RE2</span>
+                        <span class="score-max">Class 2025</span>
+                    </div>
+                    <p class="achieve-desc">
+                        Ứng dụng kiến thức vật lý đại cương A/A+ vào nghiên cứu chuyên sâu: hệ thống nhúng, vi điều
+                        khiển cơ điện tử, xử lý tín hiệu cảm biến và giải thuật điều khiển chuyển động tự hành.
+                    </p>
+                    <div class="achieve-tags">
+                        <span class="achieve-tag">Robotics Engineer</span>
+                        <span class="achieve-tag">Toán - Lý Ứng dụng</span>
+                        <span class="achieve-tag">Điều khiển tự động</span>
+                    </div>
+                </div>
             </div>
-            <div class="card">
-                <ul style="list-style: none; font-family: var(--font-m); font-size: 0.85rem; color: var(--text-dim);">
-                    <li>> Nghịch code</li>
-                    <li>> Chơi FC Online</li>
-                    <li>> Nghe nhạc</li>
-                    <li>> Đi chơi, giao lưu với anh em</li>
-                </ul>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="manutd" data-aos="fade-up">
-        <span class="sec-n">04 //</span> <h2 style="color: var(--mu-red);">Manchester United Fan</h2>
-        <div class="mu-grid">
-            <div class="card mu-card-main">
-                <p style="font-style: italic; color: var(--text); line-height: 1.8; font-size: 1.1rem; margin-bottom: 20px;">
-                    "GGMU - Niềm tự hào của sắc đỏ thành Manchester. Manchester United không chỉ là bóng đá, đó là tinh thần bền bỉ của cá nhân tôi."
-                </p>
-                <div class="skill-info" style="color: var(--mu-red);"><span>LOYALTY_LEVEL</span><span>100%</span></div>
-                <div class="bar"><div class="fill fill-red" style="width: 100%;"></div></div>
+        <!-- SECTION 03: DỰ ÁN (PROJECTS) -->
+        <section id="projects" data-aos="fade-up">
+            <div class="section-header">
+                <span class="sec-tag">03 // SYSTEMS &amp; CODE</span>
+                <h2>Dự án</h2>
             </div>
 
-            <div class="card">
-                <h3 style="font-family: var(--font-h); font-size: 0.9rem; margin-bottom: 15px; color: var(--mu-red);">FAN_DATA_LOG</h3>
-                <ul class="mu-stats-list">
-                    <li><span>Club:</span> <span class="mu-tag">Man Utd</span></li>
-                    <li><span>Passion:</span> <span class="mu-tag">Infinite</span></li>
-                    <li><span>Gaming:</span> <span class="mu-tag">FC Online</span></li>
-                    <li><span>Motto:</span> <span class="mu-tag">GGMU</span></li>
-                </ul>
+            <div class="project-grid">
+                <div class="cyber-card project-card" data-aos="fade-up" data-aos-delay="100">
+                    <div>
+                        <div class="project-meta">
+                            <span class="project-code">[SYS_01 :: AI]</span>
+                            <span class="status-badge status-incubating">
+                                <span class="status-indicator-dot"></span> INCUBATING
+                            </span>
+                        </div>
+                        <h3 class="project-title">🌌 cnAI &amp; SOVA</h3>
+                        <p class="project-desc">
+                            Hệ thống chatbot thông minh Sova tích hợp đa nền tảng cho hệ sinh thái cnAI. Ứng dụng mô
+                            hình ngôn ngữ lớn (LLM), xử lý ngôn ngữ tự nhiên và tương tác người - máy trực quan.
+                        </p>
+                    </div>
+                    <div class="tech-stack-row">
+                        <span class="tech-pill">Python</span>
+                        <span class="tech-pill">LLM API</span>
+                        <span class="tech-pill">Chatbot Engine</span>
+                        <span class="tech-pill">REST APIs</span>
+                    </div>
+                </div>
+
+                <div class="cyber-card project-card" data-aos="fade-up" data-aos-delay="200">
+                    <div>
+                        <div class="project-meta">
+                            <span class="project-code">[SYS_02 :: EMBEDDED]</span>
+                            <span class="status-badge status-progress">
+                                <span class="status-indicator-dot"></span> IN PROGRESS
+                            </span>
+                        </div>
+                        <h3 class="project-title">🤖 Autonomous Robot</h3>
+                        <p class="project-desc">
+                            Xe robot dò đường tự hành dựa trên nền tảng vi điều khiển Arduino, tích hợp mảng cảm biến
+                            hồng ngoại (IR Sensors) và thuật toán điều khiển động cơ PID phản hồi tức thời.
+                        </p>
+                    </div>
+                    <div class="tech-stack-row">
+                        <span class="tech-pill">Arduino C++</span>
+                        <span class="tech-pill">IR Sensor Array</span>
+                        <span class="tech-pill">PID Control</span>
+                        <span class="tech-pill">Robotics Hardware</span>
+                    </div>
+                </div>
+
+                <div class="cyber-card project-card" data-aos="fade-up" data-aos-delay="300">
+                    <div>
+                        <div class="project-meta">
+                            <span class="project-code">[SYS_03 :: CV]</span>
+                            <span class="status-badge status-progress">
+                                <span class="status-indicator-dot"></span> IN PROGRESS
+                            </span>
+                        </div>
+                        <h3 class="project-title">🐍 Robot Vision</h3>
+                        <p class="project-desc">
+                            Chương trình xử lý hình ảnh thời gian thực và nhận diện vật thể ứng dụng thị giác máy tính,
+                            tạo mắt thần điều hướng và nhận biết không gian cho robot cơ khí.
+                        </p>
+                    </div>
+                    <div class="tech-stack-row">
+                        <span class="tech-pill">Python</span>
+                        <span class="tech-pill">OpenCV</span>
+                        <span class="tech-pill">Computer Vision</span>
+                        <span class="tech-pill">Object Detection</span>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="contact" data-aos="fade-up">
-        <span class="sec-n">05 //</span> <h2>Liên hệ</h2>
-        <div class="contact-content">
-            <p class="email-display">Email Contact: <span>tntquabom@gmail.com</span></p>
-            <div class="contact-buttons">
-                <a href="https://github.com/tntquabom-stack" target="_blank" rel="noopener noreferrer" class="btn">MY GITHUB</a>
+        <!-- SECTION 04: SỞ THÍCH (HOBBIES) -->
+        <section id="hobbies" data-aos="fade-up">
+            <div class="section-header">
+                <span class="sec-tag">04 // LIFESTYLE</span>
+                <h2>Sở thích</h2>
             </div>
-        </div>
-    </section>
-</main>
 
-<footer>
-    <p>© 2026 | Designed & Developed by <b>Chu Nhật Anh (CNA)</b></p>
-    <p style="margin-top: 5px;">UET ROBOTICS ENGINE v2.0 // Class RE2</p>
-</footer>
+            <div class="hobbies-grid">
+                <div class="cyber-card hobby-photo-card">
+                    <div class="hobby-photo-inner">
+                        <img src="87bd56c4-6de9-42c8-905d-6e65de24368c.jpg" alt="Duy & Nam - Spider Man">
+                    </div>
+                    <div class="photo-caption">
+                        <span>🕸️ Duy &amp; Nam - Spider Man</span>
+                        <span style="color: var(--accent);">// Kỷ niệm đẹp</span>
+                    </div>
+                </div>
 
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-    AOS.init({ duration: 1000, once: true });
-    window.addEventListener('scroll', () => {
-        document.querySelectorAll('.fill').forEach(f => {
-            if(f.getBoundingClientRect().top < window.innerHeight) 
-                f.style.width = f.parentElement.previousElementSibling.lastElementChild.innerText;
+                <div class="hobby-list-card">
+                    <div class="hobby-item">
+                        <div class="hobby-icon">💻</div>
+                        <div class="hobby-text">
+                            <h4>Nghịch Code &amp; Công Nghệ Mới</h4>
+                            <p>Thử nghiệm các thuật toán, thư viện AI và phần cứng mới</p>
+                        </div>
+                    </div>
+                    <div class="hobby-item">
+                        <div class="hobby-icon">⚽</div>
+                        <div class="hobby-text">
+                            <h4>Chơi FC Online</h4>
+                            <p>Thỏa mãn đam mê chiến thuật sân cỏ ảo và xây dựng đội hình</p>
+                        </div>
+                    </div>
+                    <div class="hobby-item">
+                        <div class="hobby-icon">🎧</div>
+                        <div class="hobby-text">
+                            <h4>Nghe Nhạc Thư Giãn</h4>
+                            <p>Tăng cường sự tập trung cao độ mỗi khi giải toán và code</p>
+                        </div>
+                    </div>
+                    <div class="hobby-item">
+                        <div class="hobby-icon">🤝</div>
+                        <div class="hobby-text">
+                            <h4>Giao Lưu &amp; Đi Chơi Cùng Anh Em</h4>
+                            <p>Gắn kết bạn bè, chia sẻ câu chuyện cuộc sống và công nghệ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 05: MANCHESTER UNITED FAN -->
+        <section id="manutd" data-aos="fade-up">
+            <div class="section-header">
+                <span class="sec-tag" style="color: var(--mu-red);">05 // PASSION</span>
+                <h2 class="mu-section-title">Manchester United Fan</h2>
+            </div>
+
+            <div class="mu-grid">
+                <div class="cyber-card mu-card-main">
+                    <p class="mu-quote">
+                        "GGMU - Niềm tự hào của sắc đỏ thành Manchester. Manchester United không chỉ là bóng đá, đó là
+                        ngọn lửa đam mê, bản lĩnh vượt khó và tinh thần bền bỉ của cá nhân tôi trong cả học tập lẫn cuộc
+                        sống."
+                    </p>
+                    <div class="mu-progress-group">
+                        <div class="skill-info">
+                            <span>LOYALTY_LEVEL</span>
+                            <span>100% // TÌNH YÊU BẤT DIỆT</span>
+                        </div>
+                        <div class="bar">
+                            <div class="fill-red"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cyber-card" style="border-color: rgba(255, 26, 53, 0.25);">
+                    <h3
+                        style="font-family: var(--font-display); font-size: 1.05rem; margin-bottom: 18px; color: var(--mu-red); letter-spacing: 1px;">
+                        FAN_DATA_LOG // 🔴
+                    </h3>
+                    <ul class="mu-stats-list">
+                        <li>
+                            <span class="mu-stat-title">Câu lạc bộ</span>
+                            <span class="mu-tag">Manchester United</span>
+                        </li>
+                        <li>
+                            <span class="mu-stat-title">Mức độ đam mê</span>
+                            <span class="mu-tag">Infinite ∞</span>
+                        </li>
+                        <li>
+                            <span class="mu-stat-title">Gaming</span>
+                            <span class="mu-tag">FC Online</span>
+                        </li>
+                        <li>
+                            <span class="mu-stat-title">Khẩu hiệu</span>
+                            <span class="mu-tag">GGMU 🔴</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 06: LIÊN HỆ (CONTACT) -->
+        <section id="contact" data-aos="fade-up">
+            <div class="section-header">
+                <span class="sec-tag">06 // COMMUNICATE</span>
+                <h2>Liên hệ</h2>
+            </div>
+
+            <div class="cyber-card">
+                <div class="contact-box">
+                    <div>
+                        <p class="contact-intro">
+                            Tôi luôn sẵn lòng kết nối, học hỏi và hợp tác trong các dự án nghiên cứu Robotics, Trí tuệ
+                            nhân tạo (AI) cũng như các ý tưởng công nghệ sáng tạo!
+                        </p>
+
+                        <div class="email-card">
+                            <div>
+                                <div
+                                    style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); margin-bottom: 4px;">
+                                    OFFICIAL EMAIL</div>
+                                <div class="email-val" id="user-email">tntquabom@gmail.com</div>
+                            </div>
+                            <button class="copy-btn" id="copy-email-btn" onclick="copyEmail()">
+                                <span>📋 Sao chép email</span>
+                            </button>
+                        </div>
+
+                        <div class="contact-links">
+                            <a href="https://github.com/tntquabom-stack" target="_blank" rel="noopener noreferrer"
+                                class="btn btn-primary">
+                                <span>🐙 GITHUB PROFILE</span>
+                            </a>
+                            <a href="mailto:tntquabom@gmail.com" class="btn btn-outline">
+                                <span>✉️ GỬI EMAIL TRỰC TIẾP</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; border-left: 1px solid rgba(255,255,255,0.06); padding: 10px 0;">
+                        <div
+                            style="font-family: var(--font-mono); color: var(--accent); font-size: 0.8rem; margin-bottom: 8px;">
+                            TRANSMISSION CHANNELS</div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.7;">
+                            Hà Nội, Việt Nam<br>
+                            Trường ĐH Công nghệ - ĐHQGHN<br>
+                            Khoa Điện tử viễn thông
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Floating Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+        title="Về đầu trang">
+        ▲
+    </button>
+
+    <!-- Toast Message -->
+    <div class="toast" id="toast">
+        <span>✅</span>
+        <span id="toast-text">Đã sao chép email vào bộ nhớ tạm!</span>
+    </div>
+
+    <footer>
+        <p>© 2026 | Designed &amp; Developed by <b>Chu Nhật Anh (CNA)</b></p>
+        <p style="margin-top: 6px; font-size: 0.72rem; color: var(--text-dim);">
+            UET ROBOTICS ENGINE v2.0 // Class RE2 • UET – VNU HANOI
+        </p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Khởi tạo thư viện hoạt ảnh AOS
+        AOS.init({
+            duration: 900,
+            easing: 'ease-out-cubic',
+            once: true
         });
-    });
-</script>
+
+        // Tính năng sao chép Email với Toast Feedback
+        function copyEmail() {
+            const email = document.getElementById('user-email').innerText.trim();
+            navigator.clipboard.writeText(email).then(() => {
+                showToast('Đã sao chép: ' + email);
+            }).catch(err => {
+                showToast('Lỗi khi sao chép!');
+            });
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const text = document.getElementById('toast-text');
+            text.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Nút cuộn về đầu trang (Back to top)
+        const backToTopBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+
+        // Interactive Cyber Particle Network Canvas
+        const canvas = document.getElementById('cyber-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const particleCount = Math.min(window.innerWidth < 768 ? 35 : 75, 80);
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.7,
+                vy: (Math.random() - 0.5) * 0.7,
+                radius: Math.random() * 1.6 + 0.8
+            });
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0) p.x = width;
+                if (p.x > width) p.x = 0;
+                if (p.y < 0) p.y = height;
+                if (p.y > height) p.y = 0;
+
+                // Draw particle node
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 247, 255, 0.55)';
+                ctx.fill();
+
+                // Connect nearby particles with subtle cyber links
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 115) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(0, 247, 255, ${0.18 * (1 - dist / 115)})`;
+                        ctx.lineWidth = 0.75;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+    </script>
 </body>
+
 </html>
